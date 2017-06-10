@@ -19,11 +19,41 @@ var vid = document.getElementById("music_video");
 
 function lyric_func() {
   var lyric = document.getElementById("lyrics");
-  lyric.innerHTML = Math.floor(vid.currentTime);
-  /*if (vid.currentTime > 10) {
-    lyric.innerHTML = "More than 10 seconds";
+  //lyric.innerHTML = vid.currentTime;
+  if ((vid.currentTime >= 6) && (vid.currentTime <= 14)) {
+    lyric.innerHTML = "The sun shines bright in My Old Kentucky Home";
+  } else if ((vid.currentTime > 14) && (vid.currentTime <= 21)) {
+    lyric.innerHTML = "'Tis summer, the people are gay";
+  } else if ((vid.currentTime > 21) && (vid.currentTime <= 28)) {
+    lyric.innerHTML = "The corn-top's ripe and the meadow's in the bloom";
+  } else if ((vid.currentTime > 28) && (vid.currentTime <= 33)) {
+    lyric.innerHTML = 'While the birds make music all the day. <br/> \
+                       <img class="image" src="images/leftparrot.gif"/> \
+                       <img class="image" src="images/big_bird.jpg"/>   \
+                       <img class="image" src="images/rightparrot.gif"/>';
+  } else if ((vid.currentTime > 33) && (vid.currentTime <= 41)) {
+    lyric.innerHTML = "The young folks roll on the little cabin floor";
+  } else if ((vid.currentTime > 41) && (vid.currentTime <= 48)) {
+    lyric.innerHTML = "All merry, all happy and bright";
+  } else if ((vid.currentTime > 48) && (vid.currentTime <= 55)) {
+    lyric.innerHTML = "By 'n' by hard times comes a knocking at the door";
+  } else if ((vid.currentTime > 55) && (vid.currentTime <= 58)) {
+    lyric.innerHTML = 'Then My Old Kentucky Home, <br/> \
+                       <img class="image" src="images/kentucky_meme.jpg"/>';
+  } else if ((vid.currentTime > 58) && (vid.currentTime <= 62)) {
+    lyric.innerHTML = "good night!";
+  } else if ((vid.currentTime > 62) && (vid.currentTime <= 68)) {
+    lyric.innerHTML = "Weep no more my lady";
+  } else if ((vid.currentTime > 68) && (vid.currentTime <= 75)) {
+    lyric.innerHTML = "Oh weep no more today";
+  } else if ((vid.currentTime > 75) && (vid.currentTime <= 79)) {
+    lyric.innerHTML = "We will sing one song";
+  } else if ((vid.currentTime > 79) && (vid.currentTime <= 83)) {
+    lyric.innerHTML = 'For My Old Kentucky Home <br/> \
+                       <img class="image" src="images/Kentucky.jpg"/>';
+  } else if ((vid.currentTime > 83) && (vid.currentTime <= 94)) {
+    lyric.innerHTML = "For My Old Kentucky Home, far away";
   }
-  */
 }
 
 vid.addEventListener("timeupdate",lyric_func);
