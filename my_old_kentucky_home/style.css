@@ -1,4 +1,32 @@
 .image {
-  height: 150px;
-  width: 150px;
+  height: 200px;
+  width: 28%;
+}
+
+html {
+  background: steelblue;
+}
+
+#title {
+  color: white;
+  position: relative;
+  text-align: center;
+  font-family: Palatino, Georgia, serif;
+}
+
+#music_video, #lyrics {
+  border: 5px solid white;
+  border-radius: 5px;
+  width: 85%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#lyrics {
+  color: white;
+  min-height: 100px;
+  text-align: center;
+  font-family: Palatino, Georgia, serif;
+  line-height: 100px;
 }
