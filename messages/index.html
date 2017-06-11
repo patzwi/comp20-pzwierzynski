@@ -10,8 +10,18 @@
       jsonData = '[{"id":1,"content":"Do you really want to hurt me?","username":"Boy"},{"id":2,"content":"Do you really want to make me cry?","username":"George"}]';
       // Your code here......
       var parsed = JSON.parse(jsonData);
-      console.log(parsed[0].content);
+      //console.log(parsed[0].content);
+      var messages = document.getElementById("messages");
+      var post = "";
+      parsed.map((message) => {
+        var current_mess = "<p> <" + message.id + "> " + message.content;
+        current_mess += " : " + message.username + "</p>";
+        post += current_mess;
+        //console.log(post);
+      })
+      messages.innerHTML = post;
     }
+
   </script>
 </head>
 
