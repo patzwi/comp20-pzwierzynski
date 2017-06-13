@@ -55,12 +55,19 @@ function createMap () {
     zoom: 11
   });
 
+  var image = {
+    url: "mbta.png",
+    scaledSize: new google.maps.Size(22,22)
+  };
+
   var marker = new Array(22);
   for (var i in station) {
     marker[i] = new google.maps.Marker({
       map: map,
       position: station[i],
-      title: names[i]
+      title: names[i],
+      icon: image
     });
+
   }
 }
