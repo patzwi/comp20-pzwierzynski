@@ -54,7 +54,7 @@ function createMap () {
     center: station[0],
     zoom: 13
   });
-
+ //Add Marker image and station markers
   var image = {
     url: "mbta.png",
     scaledSize: new google.maps.Size(22,22)
@@ -70,7 +70,7 @@ function createMap () {
     });
 
     var redLine = new Array(3);
-
+    //route from alewife to JFK/UMASS
     redLine[0] = [
       station[11],
       station[10],
@@ -86,7 +86,7 @@ function createMap () {
       station[1],
       station[4]
     ];
-
+    //Route 2 seperate lines at the JFK/UMASS fork
     redLine[1] = [
       station[4],
       station[5],
@@ -104,6 +104,7 @@ function createMap () {
       station[21]
     ];
 
+    //Add polylines to map
     var track = new Array(3);
     for (var i in redLine) {
         track[i] = new google.maps.Polyline({
