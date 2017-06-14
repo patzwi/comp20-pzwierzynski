@@ -52,7 +52,7 @@ function createMap () {
   //Create Map and Marker Loop
   var map = new google.maps.Map(document.getElementById('map'), {
     center: station[0],
-    zoom: 11
+    zoom: 13
   });
 
   var image = {
@@ -69,5 +69,51 @@ function createMap () {
       icon: image
     });
 
+    var redLine = new Array(3);
+
+    redLine[0] = [
+      station[11],
+      station[10],
+      station[2],
+      station[3],
+      station[20],
+      station[12],
+      station[13],
+      station[6],
+      station[14],
+      station[0],
+      station[7],
+      station[1],
+      station[4]
+    ];
+
+    redLine[1] = [
+      station[4],
+      station[5],
+      station[19],
+      station[9],
+      station[17]
+    ];
+
+    redLine[2] = [
+      station[4],
+      station[8],
+      station[18],
+      station[15],
+      station[16],
+      station[21]
+    ];
+
+    var track = new Array(3);
+    for (var i in redLine) {
+        track[i] = new google.maps.Polyline({
+        path: redLine[i],
+        geodesic: true,
+        strokeColor: "red",
+        strokeWeight: 5
+      });
+
+        track[i].setMap(map);
+    }
   }
 }
