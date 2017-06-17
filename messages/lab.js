@@ -12,7 +12,8 @@ function displayData(jsonData) {
 
 function parse() {
   var xml = new XMLHttpRequest();
-  xml.open("GET", "data.json", true);
+  //xml.open("GET", "data.json", true);
+  xml.open("GET", "https://messagehub.herokuapp.com/messages.json", true);
   xml.onreadystatechange = function() {
     if ((xml.readyState == 4) && (xml.status == 200)) {
         //console.log("response received");
