@@ -1,7 +1,7 @@
 // Patrick Zwierzynski
 // -- Uses google map API to display map
 function createMap () {
-  // STATION COORDS
+  // HARD-CODED STATION COORDS
   var station = new Array(22);
   station[0] = {lat: 42.352271, lng: -71.05524200000001};
   station[1] = {lat: 42.330154, lng: -71.057655};
@@ -68,6 +68,7 @@ function createMap () {
       title: names[i],
       icon: image
     });
+  }
 
     var redLine = new Array(3);
     //route from alewife to JFK/UMASS
@@ -103,7 +104,6 @@ function createMap () {
       station[16],
       station[21]
     ];
-
     //Add polylines to map
     var track = new Array(3);
     for (var i in redLine) {
@@ -116,5 +116,20 @@ function createMap () {
 
         track[i].setMap(map);
     }
-  }
+
+    var image2 = {
+      url: "person.png",
+      scaledSize: new google.maps.Size(26,26)
+    };
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+     var loc = {lat: position.coords.latitude, lng: position.coords.longitude};
+     var loc_mark = new google.maps.Marker({
+       map: map,
+       position: loc,
+       title: "You are here",
+       icon: image2
+     });
+
+   });
 }
