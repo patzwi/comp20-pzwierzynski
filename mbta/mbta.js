@@ -138,13 +138,25 @@ function createMap () {
      for (var i in station) {
        var station_loc = new google.maps.LatLng(station[i].lat, station[i].lng);
        var dist = google.maps.geometry.spherical.computeDistanceBetween(station_loc, myLoc);
-       //console.log(names[i] + " : " + dist);
+       //console.log(names[i] + " : " + dist); //prints all station distances
        if (dist < min_distance) {
          min_distance = dist;
          min_index = i;
        }
      }
-     console.log(names[min_index] + " : " + min_distance);
+     //console.log(names[min_index] + " : " + min_distance); //disp closest mbta
+     var info_window_text = "<h1> Your Current Location </h1>" +
+     "<p>Closest MBTA station: " + names[min_index] + "</p>" +
+     "<p>Distance away (in miles): " + (min_distance/1609.34).toFixed(2) +
+     "</p>"
+
+     var info_win = new google.maps.InfoWindow ({
+       content: info_window_text
+     });
+
+     loc_mark.addListener("click", function(){
+       info_win.open(map, loc_mark);
+     });
     });
 
 }
