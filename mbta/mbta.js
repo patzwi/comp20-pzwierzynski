@@ -113,10 +113,10 @@ function createMap () {
         strokeColor: "red",
         strokeWeight: 5
       });
-
         track[i].setMap(map);
     }
 
+    // Checks current location and adds marker to map
     var image2 = {
       url: "person.png",
       scaledSize: new google.maps.Size(26,26)
@@ -131,5 +131,21 @@ function createMap () {
        icon: image2
      });
 
-   });
+     //convert to latlng obj.
+     var myLoc = new google.maps.LatLng(loc.lat, loc.lng);
+     var min_distance = Number.MAX_SAFE_INTEGER; //initialize val.
+     var min_index = -1; //initialize val.
+     for (var i in station) {
+       var station_loc = new google.maps.LatLng(station[i].lat, station[i].lng);
+       var dist = google.maps.geometry.spherical.computeDistanceBetween(station_loc, myLoc);
+       //console.log(names[i] + " : " + dist);
+       if (dist < min_distance) {
+         min_distance = dist;
+         min_index = i;
+       }
+     }
+     console.log(names[min_index] + " : " + min_distance);
+    });
+
 }
+    //compute spherical distance between user and all stations
