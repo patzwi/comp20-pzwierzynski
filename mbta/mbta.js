@@ -157,6 +157,15 @@ function createMap () {
      loc_mark.addListener("click", function(){
        info_win.open(map, loc_mark);
      });
+
+     var station_route = new google.maps.Polyline ({
+       path: [loc, station[min_index]],
+       geodesic: true,
+       strokeColor: "blue",
+       strokeWeight: 5
+     });
+     station_route.setMap(map);
+     
     });
 
 }
