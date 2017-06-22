@@ -1,8 +1,17 @@
 // Patrick Zwierzynski
+
+//used in createMap function to differentiate closures
+//-- code referenced: https://stackoverflow.com/questions/2670356/...
+//                    looping-through-markers-with-google-maps-api-v3-problem
+function makeWindow(map, infowindow, marker) {
+  return function() {
+    infowindow.open(map, marker);
+  };
+}
 // -- Uses google map API to display map
 function createMap () {
   // HARD-CODED STATION COORDS
-  var station = new Array(22);
+  var station = [];
   station[0] = {lat: 42.352271, lng: -71.05524200000001};
   station[1] = {lat: 42.330154, lng: -71.057655};
   station[2] = {lat: 42.3884, lng: -71.11914899999999};
@@ -49,12 +58,48 @@ function createMap () {
   names[19] = "Fields Center";
   names[20] = "Central Square";
   names[21] = "Braintree";
+
   //Create Map and Marker Loop
   var map = new google.maps.Map(document.getElementById('map'), {
     center: station[0],
     zoom: 13
   });
- //Add Marker image and station markers
+
+  var xml = new XMLHttpRequest();
+  xml.open("GET", "https://defense-in-derpth.herokuapp.com/redline.json", true);
+  xml.onreadystatechange = function() {
+    if ((xml.readyState == 4) && (xml.status == 200)) {
+        //console.log("response received");
+        var jsonData = JSON.parse(xml.responseText);
+        info_stat = new Array(22);
+        for (var i in names) {
+          info_stat[i] = "<h2>Upcoming Trains for " + names[i] + ":</h2>";
+        }
+        for (var i in jsonData.TripList.Trips) {
+          for (var j in jsonData.TripList.Trips[i].Predictions) {
+            for (var k in names) {
+              if (jsonData.TripList.Trips[i].Predictions[j].Stop == names[k]) {
+                var info_string = "<p>Train towards " +
+                jsonData.TripList.Trips[i].Destination + " arriving in " +
+                jsonData.TripList.Trips[i].Predictions[j].Seconds +
+                " seconds</p>";
+                info_stat[k] += info_string;
+              }
+            }
+          }
+        }
+        var marker_info = [];
+        for (var i in station) {
+          marker_info[i] = new google.maps.InfoWindow ({
+            content: info_stat[i]
+          });
+          google.maps.event.addListener(marker[i], "click",
+                                        makeWindow(map, marker_info[i], marker[i]));
+        }
+      }
+  }
+  xml.send();
+
   var image = {
     url: "mbta.png",
     scaledSize: new google.maps.Size(22,22)
@@ -138,17 +183,16 @@ function createMap () {
      for (var i in station) {
        var station_loc = new google.maps.LatLng(station[i].lat, station[i].lng);
        var dist = google.maps.geometry.spherical.computeDistanceBetween(station_loc, myLoc);
-       //console.log(names[i] + " : " + dist); //prints all station distances
        if (dist < min_distance) {
          min_distance = dist;
          min_index = i;
        }
      }
-     //console.log(names[min_index] + " : " + min_distance); //disp closest mbta
-     var info_window_text = "<h1> Your Current Location </h1>" +
+
+     var info_window_text = "<h2> Your Current Location </h2>" +
      "<p>Closest MBTA station: " + names[min_index] + "</p>" +
      "<p>Distance away (in miles): " + (min_distance/1609.34).toFixed(2) +
-     "</p>"
+     "</p>";
 
      var info_win = new google.maps.InfoWindow ({
        content: info_window_text
@@ -165,8 +209,5 @@ function createMap () {
        strokeWeight: 5
      });
      station_route.setMap(map);
-     
     });
-
 }
-    //compute spherical distance between user and all stations
