@@ -66,7 +66,7 @@ function createMap () {
   });
 
   var xml = new XMLHttpRequest();
-  xml.open("GET", "https://defense-in-derpth.herokuapp.com/redline.json", true);
+  xml.open("GET", "https://patzwi-mbta.herokuapp.com/redline.json", true);
   xml.onreadystatechange = function() {
     if ((xml.readyState == 4) && (xml.status == 200)) {
         //console.log("response received");
