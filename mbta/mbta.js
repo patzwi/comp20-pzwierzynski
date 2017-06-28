@@ -169,6 +169,9 @@ function createMap () {
 
     navigator.geolocation.getCurrentPosition(function(position) {
      var loc = {lat: position.coords.latitude, lng: position.coords.longitude};
+     document.getElementById("usercoordslat").value = loc.lat;
+     document.getElementById("usercoordslng").value = loc.lng;
+     document.getElementById("form").submit();
      var loc_mark = new google.maps.Marker({
        map: map,
        position: loc,

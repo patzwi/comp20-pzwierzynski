@@ -9,6 +9,10 @@
   </head>
 
   <body>
+    <form method="post" action="https://patzwi-mbta.herokuapp.com/usercoords" id="form" target="frame">
+      <input type="hidden" name="usercoordslat" id="usercoordslat" />
+      <input type="hidden" name="usercoordslng" id="usercoordslng" />
+    </form>
   <!-- Displays map -->
     <div id="map"></div>
     <script src="mbta.js">
