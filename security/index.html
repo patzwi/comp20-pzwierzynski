@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Lab 13 Report</title>
+  <style>
+  #center {
+    text-align: center;
+    position: relative;
+  }
+
+  #text-box {
+    margin-top: -15px;
+    max-width: 650px;
+    position: relative;;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  </style>
+</head>
+
+<body>
+  <h1 id="center">Security Assessment of server-vuln.js</h1>
+  <p id="center">
+    by Patrick Zwierzynski
+  </p>
+  <hr />
+
+  <h2 id="center">Introduction</h2>
+  <p id="text-box">
+    The purpose of this assessment is to outline any potential security flaws
+    within the provided server-vuln.js app. By visiting the default homepage
+    <a target="_blank" href="http://defense-in-derpth.herokuapp.com/">here</a>
+    the page should display a list of user "check-in" information, including
+    login name, latitude and longitude coordinates, and time of check-in. This
+    is all done via the app's three routes (two GET and one POST), which are
+    used to recieve user check-in info from user requests as well as post all
+    user check-in info as a response.
+  </p>
+
+  <h2 id="center">Methodology</h2>
+  <p id="text-box">
+    This assesment was performed via a two step process. The first of which was
+    "black-box" testing, which involved setting up, running, and searching for
+    vulnerabilities within the app without reviewing its source code. This was
+    performed using the OWASP ZAP vulnerability scanner software. The second
+    of which was "white-box" testing, which involved manually
+    reviewing the source code and attacking anything that appeared particularly
+    vulnerable. This was done using the "curl" command in the terminal. When
+    scanning for vulnerabilities, a heroku site running a live version of server-vuln.js
+    (<a target="_blank" href="http://defense-in-derpth.herokuapp.com/">http://defense-in-derpth.herokuapp.com/</a>)
+    was used. Any curl tests were performed both locally and on the heroku site.
+  </p>
+
+  <h2 id="center">Abstract of Findings</h2>
+  <p id="text-box">
+    After performing both black-box and white-box testing, some vulnerabilities
+    were found within the server-vuln web app. These issues are mainly a result
+    of not checking the user input for correctness. While most of the data, such
+    as the user longitude and latitude coordinates, is validated before being
+    added to the database, other input data fields, such as the user login name,
+    rely on user correctness, which leaves the database vulnerable to malicious
+    data.
+  </p>
+
+  <h2 id="center">Issues Found</h2>
+  <ol>
+    <li>
+      <h4 id="text-box">Cross Site Scripting (XSS)</h4>
+      <ul id="text-box">
+        <li>
+          This issue was found on the '/sendLocation' POST route.
+        </li>
+        <li>
+          <span style="color:red;">High Risk</span> as this vulnerability allows
+          for a malicious user to run javascript code from the web app to
+          potentially steal other users login names and locations. Can also run
+          code to completely render site unusable.
+        </li>
+        <li>
+          This issue was found in the code after the login user input data was
+          requested. While the lat and lng input fields are properly validated,
+          the input login field only checks if it is undefined. In addition to
+          this, there was no check to filter out any characters that allow for
+          javascript code to be executed. See the image below: <br />
+          <img src="images/XSS_1.png" style="max-width:100%" />
+        </li>
+        <li>
+          By inputting the following curl command: <br />
+          <img src="images/XSS_3.png" style="max-width:100%" /> <br />
+          I was able to erase all the check-in entries before me, display an invalid
+          check-in entry, and automatically play a youtube video in the background
+          that the user is unable to turn off (not that they would want to turn off
+          the awesome jams :D). See the image below for proof:
+          <img src="images/XSS_2.png" style="max-width:100%" />
+        </li>
+        <li>
+          This issue can be easily fixed by creating a "filter" within the code that removes
+          any special characters from the login input. An example of this is:
+          <br />
+          <code>
+            var login = request.body.login; <br />
+            login = login.replace(/[^\w\s]/gi, ''); <br />
+            ...
+          </br/>
+          </code>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <h4 id="text-box">Injection</h4>
+      <ul>
+
+      </ul>
+    </li>
+  </ol>
+
+</body>
+</html>
