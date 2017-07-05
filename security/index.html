@@ -103,7 +103,7 @@
             var login = request.body.login; <br />
             login = login.replace(/[^\w\s]/gi, ''); <br />
             ...
-          </br/> <br />
+          </br/> <br /> <br />
           </code>
         </li>
       </ul>
@@ -147,7 +147,7 @@
             var loginEntry = request.body.login; <br />
             loginEntry = loginEntry.replace(/[^\w\s]/gi, ''); <br />
             ...
-          <br/> <br/>
+          <br/> <br/> <br />
           </code>
         </li>
       </ul>
@@ -160,7 +160,7 @@
           This issue was found on the '/' GET route.
         </li>
         <li>
-          <span style="color:#d3bc37;">Medium Risk</span> as this vulnerability
+          <span style="color:#d3bc37;">Medium-Low Risk</span> as this vulnerability
           does not protect against 'ClickJacking' attacks, in which "a web user
           can be tricked into clicking on something different from what the user
           perceives they are clicking on, thus potentially revealing
@@ -184,7 +184,13 @@
 
   <h2 class="center">Conclusion</h2>
   <p class="text-box">
-
+      The vulnerabilities in the server-vuln.js file leave the web app exposed
+      to many security issues, ranging from rendering the app completely unusable
+      to exposing potentially confidential and sensitive user information.
+      The issues themselves (at least the two high risk vulnerabilities) appear
+      easy to implement and fix. My recommendation would be to shut down the app
+      immediately and fix the changes quickly before any further damage can be
+      done.
   </p>
 </body>
 </html>
