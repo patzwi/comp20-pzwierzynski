@@ -4,12 +4,12 @@
   <meta charset="utf-8" />
   <title>Lab 13 Report</title>
   <style>
-  #center {
+  .center {
     text-align: center;
     position: relative;
   }
 
-  #text-box {
+  .text-box {
     margin-top: -15px;
     max-width: 650px;
     position: relative;;
@@ -20,14 +20,14 @@
 </head>
 
 <body>
-  <h1 id="center">Security Assessment of server-vuln.js</h1>
-  <p id="center">
+  <h1 class="center">Security Assessment of server-vuln.js</h1>
+  <p class="center">
     by Patrick Zwierzynski
   </p>
   <hr />
 
-  <h2 id="center">Introduction</h2>
-  <p id="text-box">
+  <h2 class="center">Introduction</h2>
+  <p class="text-box">
     The purpose of this assessment is to outline any potential security flaws
     within the provided server-vuln.js app. By visiting the default homepage
     <a target="_blank" href="http://defense-in-derpth.herokuapp.com/">here</a>
@@ -38,8 +38,8 @@
     user check-in info as a response.
   </p>
 
-  <h2 id="center">Methodology</h2>
-  <p id="text-box">
+  <h2 class="center">Methodology</h2>
+  <p class="text-box">
     This assesment was performed via a two step process. The first of which was
     "black-box" testing, which involved setting up, running, and searching for
     vulnerabilities within the app without reviewing its source code. This was
@@ -52,8 +52,8 @@
     was used. Any curl tests were performed both locally and on the heroku site.
   </p>
 
-  <h2 id="center">Abstract of Findings</h2>
-  <p id="text-box">
+  <h2 class="center">Abstract of Findings</h2>
+  <p class="text-box">
     After performing both black-box and white-box testing, some vulnerabilities
     were found within the server-vuln web app. These issues are mainly a result
     of not checking the user input for correctness. While most of the data, such
@@ -63,11 +63,11 @@
     data.
   </p>
 
-  <h2 id="center">Issues Found</h2>
+  <h2 class="center">Issues Found</h2>
   <ol>
     <li>
-      <h4 id="text-box">Cross Site Scripting (XSS)</h4>
-      <ul id="text-box">
+      <h4 class="text-box">Cross Site Scripting (XSS)</h4>
+      <ul class="text-box">
         <li>
           This issue was found on the '/sendLocation' POST route.
         </li>
@@ -110,8 +110,8 @@
     </li>
 
     <li>
-      <h4 id="text-box">Injection</h4>
-      <ul id="text-box">
+      <h4 class="text-box">Injection</h4>
+      <ul class="text-box">
         <li>
           This issue was found on the '/checkins.json' GET route.
         </li>
@@ -154,49 +154,37 @@
     </li>
 
     <li>
-      <h4 id="text-box">Click-Jacking</h4>
-      <ul id="text-box">
+      <h4 class="text-box">X-Frame Options Header Not Set</h4>
+      <ul class="text-box">
         <li>
-          This issue was found on the '/sendLocation' POST route.
+          This issue was found on the '/' GET route.
         </li>
         <li>
-          <span style="color:red;">High Risk</span> as this vulnerability allows
-          for a malicious user to run javascript/html code from the web app to
-          potentially steal other users login names and locations. Can also run
-          code to completely render site unusable.
+          <span style="color:#d3bc37;">Medium Risk</span> as this vulnerability
+          does not protect against 'ClickJacking' attacks, in which "a web user
+          can be tricked into clicking on something different from what the user
+          perceives they are clicking on, thus potentially revealing
+          confidential information or taking control of their computer"
+          (<a target="_blank" href="https://en.wikipedia.org/wiki/Clickjacking">https://en.wikipedia.org/wiki/Clickjacking</a>).
         </li>
         <li>
-          This issue was found in the code after the login user input data was
-          requested. While the lat and lng input fields are properly validated,
-          the input login field only checks if it is undefined. In addition to
-          this, there was no check to filter out any characters that allow for
-          javascript/html code to be executed. The code below shows where the vulnerability exists: <br />
-          <img src="images/XSS_1.png" style="max-width:100%" />
+          This issue was found during black-box testing using the OWASP ZAP
+          scanner of the defense-in-derpth heroku site. The following image
+          below shows the scanner output: <br />
+          <img src="images/ClickJacking1.png" style="max-width:100%" />
         </li>
         <li>
-          By inputting the following curl command: <br />
-          <img src="images/XSS_3.png" style="max-width:100%" /> <br />
-          I was able to "hide" all the check-in entries before me, display an invalid
-          check-in entry, and automatically play a youtube video in the background
-          that the user is unable to turn off (not that they would want to turn off
-          the awesome jams :D). See the image below for proof: <br />
-          <img src="images/XSS_2.png" style="max-width:100%" />
-        </li>
-        <li>
-          This issue can be easily fixed by creating a "filter" within the code that removes
-          any special characters from the login input. An example of this is:
+          The scanner offers the following solution to fix the issue:
           <br />
-          <code>
-            ... <br />
-            var login = request.body.login; <br />
-            login = login.replace(/[^\w\s]/gi, ''); <br />
-            ...
-          </br/> <br />
-          </code>
+          <img src="images/ClickJacking2.png" style="max-width:100%" />
         </li>
       </ul>
     </li>
   </ol>
 
+  <h2 class="center">Conclusion</h2>
+  <p class="text-box">
+
+  </p>
 </body>
 </html>
