@@ -73,7 +73,7 @@
         </li>
         <li>
           <span style="color:red;">High Risk</span> as this vulnerability allows
-          for a malicious user to run javascript code from the web app to
+          for a malicious user to run javascript/html code from the web app to
           potentially steal other users login names and locations. Can also run
           code to completely render site unusable.
         </li>
@@ -82,16 +82,16 @@
           requested. While the lat and lng input fields are properly validated,
           the input login field only checks if it is undefined. In addition to
           this, there was no check to filter out any characters that allow for
-          javascript code to be executed. See the image below: <br />
+          javascript/html code to be executed. The code below shows where the vulnerability exists: <br />
           <img src="images/XSS_1.png" style="max-width:100%" />
         </li>
         <li>
           By inputting the following curl command: <br />
           <img src="images/XSS_3.png" style="max-width:100%" /> <br />
-          I was able to erase all the check-in entries before me, display an invalid
+          I was able to "hide" all the check-in entries before me, display an invalid
           check-in entry, and automatically play a youtube video in the background
           that the user is unable to turn off (not that they would want to turn off
-          the awesome jams :D). See the image below for proof:
+          the awesome jams :D). See the image below for proof: <br />
           <img src="images/XSS_2.png" style="max-width:100%" />
         </li>
         <li>
@@ -99,18 +99,101 @@
           any special characters from the login input. An example of this is:
           <br />
           <code>
+            ... <br />
             var login = request.body.login; <br />
             login = login.replace(/[^\w\s]/gi, ''); <br />
             ...
-          </br/>
+          </br/> <br />
           </code>
         </li>
       </ul>
     </li>
+
     <li>
       <h4 id="text-box">Injection</h4>
-      <ul>
+      <ul id="text-box">
+        <li>
+          This issue was found on the '/checkins.json' GET route.
+        </li>
+        <li>
+          <span style="color:red;">High Risk</span> as this vulnerability allows
+          for a malicious user to access login data that is not authorized.
+        </li>
+        <li>
+          This issue was found in the code after the login user input data was
+          requested. After this data was requested, it was only checked to see
+          if the data was undefined or null, which leaves it vulnerable to an
+          injection attack. The code below shows where the vulnerability exists:
+          <br />
+          <img src="images/Injection3.png" style="max-width:100%" />
+        </li>
+        <li>
+          Normally, the /checkins.json route should display the following site: <br />
+          <img src="images/Injection1.png" style="max-width:100%" /> <br />
+          Using a query string with the $ne (not equal) operator, I was able to
+          request all the current data being stored in the database. This query
+          string displays all data whose "login" name is not equal to 0. See the
+          image below for proof: <br />
+          <img src="images/Injection2.png" style="max-width:100%" />
+        </li>
+        <li>
+          This issue can alse be easily fixed by creating a "filter" within the
+          code that removes any special characters from the login input. More
+          specifically, the "$" character is to be removed. An example of this
+          is:
+          <br />
+          <code>
+            ... <br />
+            var loginEntry = request.body.login; <br />
+            loginEntry = loginEntry.replace(/[^\w\s]/gi, ''); <br />
+            ...
+          <br/> <br/>
+          </code>
+        </li>
+      </ul>
+    </li>
 
+    <li>
+      <h4 id="text-box">Click-Jacking</h4>
+      <ul id="text-box">
+        <li>
+          This issue was found on the '/sendLocation' POST route.
+        </li>
+        <li>
+          <span style="color:red;">High Risk</span> as this vulnerability allows
+          for a malicious user to run javascript/html code from the web app to
+          potentially steal other users login names and locations. Can also run
+          code to completely render site unusable.
+        </li>
+        <li>
+          This issue was found in the code after the login user input data was
+          requested. While the lat and lng input fields are properly validated,
+          the input login field only checks if it is undefined. In addition to
+          this, there was no check to filter out any characters that allow for
+          javascript/html code to be executed. The code below shows where the vulnerability exists: <br />
+          <img src="images/XSS_1.png" style="max-width:100%" />
+        </li>
+        <li>
+          By inputting the following curl command: <br />
+          <img src="images/XSS_3.png" style="max-width:100%" /> <br />
+          I was able to "hide" all the check-in entries before me, display an invalid
+          check-in entry, and automatically play a youtube video in the background
+          that the user is unable to turn off (not that they would want to turn off
+          the awesome jams :D). See the image below for proof: <br />
+          <img src="images/XSS_2.png" style="max-width:100%" />
+        </li>
+        <li>
+          This issue can be easily fixed by creating a "filter" within the code that removes
+          any special characters from the login input. An example of this is:
+          <br />
+          <code>
+            ... <br />
+            var login = request.body.login; <br />
+            login = login.replace(/[^\w\s]/gi, ''); <br />
+            ...
+          </br/> <br />
+          </code>
+        </li>
       </ul>
     </li>
   </ol>
